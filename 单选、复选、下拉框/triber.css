@@ -1,0 +1,111 @@
+/*
+* @Author: Administrator
+* @Date:   2017-03-14 15:56:09
+* @Last Modified by:   Administrator
+* @Last Modified time: 2017-03-15 10:24:29
+*/
+@CHARSET "UTF-8";
+ul ,li{
+	margin:0px;
+	padding: 0px;
+}
+ul{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+	color: #3e3e3e;
+}
+.select_box{
+	position: relative;	
+	width: 200px;
+}
+
+.select_box span{
+	display: inline-block;
+    height: 27px;
+    width: 197px;
+    line-height: 27px;
+    padding-left: 3px;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+	background: url("arrow.png") no-repeat scroll right center transparent;
+	cursor: pointer;
+}
+.noElement{
+   display: none;
+}
+.select_box ul{
+	position: absolute;
+    left: 0;
+    top: 27px;
+    background-color: #fff;
+	width: 100%;
+	border: 1px solid #ccc;
+	z-index: 400;
+	border-top: none;
+	width:197px;
+	overflow: auto;
+}
+.select_box ul.turnUp{
+	position: absolute;
+    left: 0;
+    bottom: 23px;
+    background-color: #fff;
+	width: 100%;
+	border: 1px solid #ccc;
+	z-index: 400;
+	border-bottom: none;
+	width:197px;
+	top:auto;
+}
+.select_box ul li a{
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	padding-left:8px;
+	text-align: left;
+	text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.select_box ul li a:hover{
+	background-color: #ffd395;
+	color: #fff;
+}
+.radio span,.check span{
+	padding-left: 8px;
+
+}
+.radio ,.check {
+    display: inline-block;
+    text-decoration: none;
+}
+.radio ,.check a{
+	padding-right: 13px;
+}
+.radio.active .radio-img {
+    background-position: -4px -26px;
+}
+.radio .radio-img {
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    background: url(commonSprites.png) -4px -3px;
+}
+.radio i,.check i {
+    display: inline-block;
+    position: relative;
+}
+.check.active .check-img {
+    background-position: -38px -25px;
+}
+.check .check-img {
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    margin-bottom: 2px;
+    margin-right: 8px;
+    background: url('commonSprites.png') -37px -3px;
+}
+

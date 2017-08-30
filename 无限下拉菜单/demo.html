@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            ul, li {
+                list-style: none;
+            }
+            .fl {
+                float: left;
+            }
+            .fr {
+                float: right;
+            }
+            .clearfix:after {
+                display: block;
+                content: '';
+                clear: both;
+            }
+            .clearfix {
+                zoom: 1;
+            }
+            .first-menu > li {
+                float: left;
+            }
+            .first-menu li {
+                border: 1px solid #ccc;
+                background-color: #eee;
+                padding: 5px 8px;
+                cursor: pointer;
+                position: relative;
+            }
+            .first-menu li:hover,
+            .menuWrap > li.active {
+                background-color: #ccc;
+            }
+            .noEle {
+                display: none;
+            }
+            .menu {
+                position: absolute;
+                top: 31px;
+                left: -1px;
+            }
+            .menu li {
+               white-space: nowrap;
+               position: relative;
+            }
+            .submenu {
+                position: absolute;
+                top: -1px;
+            }
+            .menu0 > .submenu {
+                top: 31px;
+                left: -1px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="menuDemo"></div>
+
+		<script src="jquery-1.9.1.min.js"></script>
+    	<script>
+    		(function($) {
+                /**
+                 * 递归
+                 */
+                function recurByChild(paramData) {
+                    var html = '';
+                    if(paramData && paramData.length > 0) {
+                        for(var i = 0; i < paramData.length; i++) {
+                            html += '<li class="menu'+paramData[i].level+'" onclick="selectMenu(\''+paramData[i].id+'\', \''+paramData[i].url+'\');"><span>'+paramData[i].title+'</span>';
+                            if(paramData[i].children){
+                                html += '<ul class="menuWrap menu submenu noEle">';
+                                html += recurByChild(paramData[i].children);
+                                html += '</ul>';
+                            }                                       
+                            html += '</li>';
+                        }  
+                        return html;
+                    } 
+                }
+                /**
+                 * 动态加载菜单数据
+                 */
+                function loadMenuData(container, param) {
+                    var paramData = param.data,
+                        html = '<ul class="menuWrap first-menu">';
+                    html += recurByChild(paramData);
+                    html += '</ul>';
+                    $(container).append(html);
+                }
+
+                /**
+                 * 选择菜单
+                 */
+                selectMenu = function(id, url, e) {
+                    $(this).addClass('active').siblings().removeClass('active');
+                    var e = e || window.event;
+                    e.stopPropagation();
+                    alert('id是'+id+'=======url是'+url);
+                }
+
+                /**
+                 * 初始化菜单
+                 */
+                function initMenu(container, param) {
+                    // 动态加载菜单数据
+                    loadMenuData(container, param);
+                }
+
+                /**
+                 * 动态设置子菜单位置
+                 */
+                function setSubmenuPos(container) {
+                    var subMenu = $(container).find('.submenu');
+                    subMenu.each(function() {
+                        var $this = $(this);
+                        var prevMenuWidth = $this.parents('.menu').width()-2;                        
+                        $this.css('left',prevMenuWidth);                       
+                    })                    
+                }
+
+                /**
+                 * 绑定事件
+                 */
+                function bindEvents(container) {
+                    $(container).find('li').mouseover(function() {
+                        clearTimeout(this.timer);
+                        var $this = $(this),
+                            childMenu = $this.children('.menu');
+                        if(childMenu) {
+                            this.timer = setTimeout(function() {
+                                childMenu.show();
+                                // 动态设置子菜单位置
+                                setSubmenuPos(container);
+                            },200);
+                        }
+                    });
+                    $(container).find('li').mouseout(function() {
+                        clearTimeout(this.timer);
+                        var $this = $(this),
+                            childMenu = $this.children('.menu');
+                        if(childMenu) {
+                            this.timer = setTimeout(function() {
+                                childMenu.hide();
+                            },300);
+                        }
+                    })
+                }
+
+                /**
+                 * 实例化
+                 */
+    			$.fn.menu = function(options) {
+                    if(typeof options == 'string') {
+                        return $.fn.menu[options](this,param);
+                    }
+                    return this.each(function() {
+                        $.extend({}, $.fn.menu.defaults, options);
+                        // 初始化
+                        initMenu(this, options);
+                        // 添加事件
+                        bindEvents(this);
+                    })
+                };
+
+                /**
+                 * 对外暴露的方法
+                 */
+                $.fn.menu.methods = {
+
+                };
+
+                /**
+                 * 默认配置
+                 */
+                $.fn.menu.defaults = {
+                    // width: "auto",
+                    // height: "auto",
+                    // headerWidth: "100%",
+                    // headerHeight: 150
+                    data :[],
+                    onSelect: function() {
+
+                    }
+                };
+    		})(jQuery);
+
+            $(function() {
+                var dataArr = [
+                    {
+                        title: "工作台", 
+                        level: 0,
+                        id: "20170001",
+                        url: "http://www.baidu.com",
+                        children: [
+                            {
+                                title: "工作台1",
+                                level: 1,
+                                id: "20170002",
+                                url: "http://www.baidu.com",
+                                children: null
+                            },
+                            {
+                                title: "工作台2",
+                                level: 1,
+                                id: "20170006",
+                                url: "http://www.baidu.com",
+                                children: [
+                                    {
+                                        title: "工作台21",
+                                        level: 2,
+                                        id: "20170003",
+                                        url: "http://www.baidu.com",
+                                        children: null
+                                    },
+                                    {
+                                        title: "工作台22",
+                                        level: 2,
+                                        id: "20170004",
+                                        url: "http://www.baidu.com",
+                                        children: [
+                                            {
+                                                title: "工作台221",
+                                                level: 3,
+                                                id: "20170005",
+                                                url: "http://www.baidu.com",
+                                                children: null
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                title: "工作台3",
+                                level: 1,
+                                id: "20170007",
+                                url: "http://www.baidu.com",
+                                children: [
+                                    {
+                                        title: "工作台31",
+                                        level: 2,
+                                        id: "20170008",
+                                        url: "http://www.baidu.com",
+                                        children: null
+                                    },
+                                    {
+                                        title: "工作台32",
+                                        level: 2,
+                                        id: "20170009",
+                                        url: "http://www.baidu.com",
+                                        children: null
+                                    }                                    
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        title: "营销执行",
+                        level: 0,
+                        id: "20170010",
+                        url: "http://www.baidu.com",
+                        children: [
+                            {
+                                title: "营销执行1",
+                                level: 1,
+                                id: "20170011",
+                                url: "http://www.baidu.com",
+                                children: null
+                            },
+                            {
+                                title: "营销执行2",
+                                level: 1,
+                                id: "20170012",
+                                url: "http://www.baidu.com",
+                                children: [
+                                    {
+                                        title: "营销执行21",
+                                        level: 2,
+                                        id: "20170013",
+                                        url: "http://www.baidu.com",
+                                        children: null
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        title: "营销策划",
+                        level: 0,
+                        id: "20170014",
+                        url: "http://www.baidu.com",
+                        children: [
+                            {
+                                title: "营销策划1",
+                                level: 1,
+                                id: "20170015",
+                                url: "http://www.baidu.com",
+                                children: null
+                            }
+                        ]
+                    }
+                ];
+                $('#menuDemo').menu({data: dataArr, onSelect: function(id) {
+                    alert(id);
+                }});
+            })
+    	</script>
+    </body>
+</html>

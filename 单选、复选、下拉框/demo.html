@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="triber.css">
+    </head>
+    <body>
+     <!-- 下拉框 -->
+		<div id="select_box">
+		</div>
+		<div id="check_box">
+		</div>
+		<div id="radio_box">
+		</div>
+		
+		<input type="button" onclick="view();" value="查询" ></input>
+    </body>
+    <script src="jquery-1.10.2.min.js"></script>
+    <script src="triber.js"></script>
+    <script type="text/javascript">
+    var selbox,chkbox,radbox;
+    $(function() {
+    	selbox = $("#select_box").triber_select({data:[{key:1,text:"自带宽带"},{key:2,text:"移动互联"},{key:3,text:"固网"},{key:4,text:"公用网络"},{key:5,text:"联通互联"}],onselect:function(data){alert(data)}});
+    	selbox.setValue(1);
+    	chkbox = $("#check_box").triber_checkbox({data:[{key:"y",text:"是"},{key:"n",text:"否",selected:true}],onclick:function(data){alert(data)}});
+    	radbox = $("#radio_box").triber_radiobox({data:[{key:"y",text:"是"},{key:"n",text:"否",selected:true}],onclick:function(data){alert(data)}});
+    });
+
+    function view(){
+    	alert(selbox.getValue());
+    	alert(chkbox.getValue());
+    	alert(radbox.getValue());
+    }
+    </script>
+</html>
